@@ -1,5 +1,6 @@
 ﻿using Microsoft.EntityFrameworkCore;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace Domain.Models
 {
@@ -11,7 +12,7 @@ namespace Domain.Models
         [Required]
         public string Name { get; set; }
 
-        [Required]
+        [Required, Column(TypeName = "decimal(65, 2)")]
         public decimal Price { get; set; }
 
         public static void Map(ModelBuilder modelBuilder)

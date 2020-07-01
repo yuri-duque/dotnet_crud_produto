@@ -1,6 +1,8 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Domain.Models;
+using Microsoft.AspNetCore.Mvc;
 using Service.ModelsService;
 using System;
+using System.Linq;
 
 namespace Controller.Controllers
 {
@@ -8,11 +10,11 @@ namespace Controller.Controllers
     [ApiController]
     public class ProdutoController : ControllerBase
     {
-        private readonly ProductService _produtoService;
+        private readonly ProductService _productService;
 
-        public ProdutoController(ProductService produtoService)
+        public ProdutoController(ProductService productService)
         {
-            _produtoService = produtoService;
+            _productService = productService;
         }
 
         [HttpGet]
@@ -20,9 +22,27 @@ namespace Controller.Controllers
         {
             try
             {
-                var usuario = _produtoService.GetAll();
+                var user = _productService.GetAll();
 
-                return Ok(usuario);
+                return Ok(user);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPost]
+        public ActionResult Save(Product product)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState.Values.SelectMany(x => x.Errors));
+
+                _productService.Save(product);
+
+                return Ok();
             }
             catch (Exception ex)
             {

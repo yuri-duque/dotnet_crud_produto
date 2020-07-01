@@ -1,5 +1,6 @@
 ﻿using Domain.Models;
 using Repository.ModelsRepository;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 
@@ -19,6 +20,11 @@ namespace Service.ModelsService
             var products = _productRepository.GetAll();
 
             return products.ToList();
+        }
+
+        public void Save(Product product)
+        {
+            _productRepository.Save(product);
         }
     }
 }

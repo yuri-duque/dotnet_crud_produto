@@ -21,7 +21,11 @@ namespace constroller
 
         public void ConfigureServices(IServiceCollection services)
         {
-            services.AddCors();
+            services.AddCors(c =>
+            {
+                c.AddPolicy("AllowOrigin", options => options.AllowAnyOrigin());
+            });
+
             services.AddControllers();
 
             services.AddDbContext<BaseContext>(options => options.UseMySql(Configuration.GetConnectionString("DefaultConnection")));
@@ -50,10 +54,7 @@ namespace constroller
 
             app.UseRouting();
 
-            app.UseCors(x => x
-                .AllowAnyOrigin()
-                .AllowAnyMethod()
-                .AllowAnyHeader());
+            app.UseCors(options => options.AllowAnyOrigin());
 
             app.UseAuthentication();
             app.UseAuthorization();

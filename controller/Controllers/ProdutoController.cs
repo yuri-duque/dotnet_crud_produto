@@ -22,7 +22,22 @@ namespace Controller.Controllers
         {
             try
             {
-                var user = _productService.GetAll();
+                var users = _productService.GetAll();
+
+                return Ok(users);
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpGet("{id}")]
+        public ActionResult GetById(long id)
+        {
+            try
+            {
+                var user = _productService.GetById(id);
 
                 return Ok(user);
             }
@@ -32,8 +47,9 @@ namespace Controller.Controllers
             }
         }
 
+
         [HttpPost]
-        public ActionResult Save(Product product)
+        public ActionResult Save([FromBody] Product product)
         {
             try
             {
@@ -41,6 +57,42 @@ namespace Controller.Controllers
                     return BadRequest(ModelState.Values.SelectMany(x => x.Errors));
 
                 _productService.Save(product);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public ActionResult Update(Product product)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState.Values.SelectMany(x => x.Errors));
+
+                _productService.Update(product);
+
+                return Ok();
+            }
+            catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
+        }
+
+        [HttpPut]
+        public ActionResult Delete(Product product)
+        {
+            try
+            {
+                if (!ModelState.IsValid)
+                    return BadRequest(ModelState.Values.SelectMany(x => x.Errors));
+
+                _productService.Update(product);
 
                 return Ok();
             }
